@@ -1,0 +1,32 @@
+version: '3.1'
+
+services:
+
+  db:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - c:/Users/roger/git/nodejs-course/15-authentication/dbdata:/data/db
+
+# When logged to the DB, run:
+# docker exec -it <CONTAINER_ID> bash
+# mongo 
+# use products
+# db.createUser(
+#   {
+#     user: "root",
+#     pwd: "1234",
+#     roles: [
+#       {
+#         role: "readWrite",
+#         db: "products"
+#       }
+#     ]
+#   }
+# )
+# db.createCollection("products")
+# db.createCollection("users")
+# db.users.insert({name: "Rogerio", email: "rogerio@test.com"})
+# get the id and put into app.js
