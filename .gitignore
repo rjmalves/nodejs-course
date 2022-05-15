@@ -105,3 +105,6 @@ dist
 
 # docker data
 **/dbdata
+
+# api key file
+**/sg_key.txt
