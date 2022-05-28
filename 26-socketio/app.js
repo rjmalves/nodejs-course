@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const { v4: uuidv4 } = require("uuid");
 const multer = require("multer");
+const socket = require("./socket");
 
 const MONGODB_URI = "mongodb://root:1234@localhost:27017/feed";
 const authRoutes = require("./routes/auth");
@@ -63,6 +64,10 @@ app.use((error, req, res, next) => {
 mongoose
   .connect(MONGODB_URI)
   .then((result) => {
-    app.listen(8080);
+    const server = app.listen(8080);
+    const io = socket.init(server);
+    io.on("connection", (socket) => {
+      console.log("Client connected.");
+    });
   })
   .catch((err) => console.log(err));
