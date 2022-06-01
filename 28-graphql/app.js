@@ -9,6 +9,7 @@ const { graphqlHTTP } = require("express-graphql");
 const graphqlSchema = require("./graphql/schema");
 const graphqlResolver = require("./graphql/resolvers");
 const auth = require("./middleware/auth");
+const { clearImage } = require("./util/file");
 
 const MONGODB_URI = "mongodb://root:1234@localhost:27017/feed";
 
@@ -63,12 +64,11 @@ app.use("/post-image", (req, res, next) => {
   if (!req.file) {
     return res.status(200).json({ message: "No file provided!" });
   }
-  if (req.body.olaPath) {
+  if (req.body.oldPath) {
     clearImage(req.body.oldPath);
   }
-  return res
-    .status(201)
-    .json({ message: "File stored", filePath: req.file.path });
+  let resPath = req.file.path.replace("\\", "/");
+  return res.status(201).json({ message: "File stored", filePath: resPath });
 });
 
 app.use(
@@ -110,11 +110,3 @@ mongoose
     app.listen(8080);
   })
   .catch((err) => console.log(err));
-
-const clearImage = (filePath) => {
-  filePath = path.join(__dirname + "/../" + filePath);
-  filePath = filePath.replace("\\", "/");
-  fs.unlink(filePath, (err) => {
-    console.log(err);
-  });
-};

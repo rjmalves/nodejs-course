@@ -30,12 +30,13 @@ class SinglePost extends Component {
         }
       `,
     };
-    fetch("http://localhost:8080/feed/post/" + postId, {
+    fetch("http://localhost:8080/graphql", {
+      method: "POST",
       headers: {
         Authorization: "Bearer " + this.props.token,
         "Content-Type": "application/json",
-        body: JSON.stringify(graphqlQuery),
       },
+      body: JSON.stringify(graphqlQuery),
     })
       .then((res) => {
         return res.json();
